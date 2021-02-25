@@ -1,3 +1,8 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+
 html,
 body {
   padding: 0;
@@ -13,4 +18,79 @@ a {
 
 * {
   box-sizing: border-box;
+}
+::-webkit-scrollbar {
+    width: 7px;
+    height: 7px;
+}
+::-webkit-scrollbar-track {
+    background: #fff;
+    padding: 1px;
+}
+::-webkit-scrollbar-thumb {
+    background: #a7abad;
+    border-radius: 4px;
+}
+.btn-block {
+  @apply block w-full text-center;
+}
+.modal-material{
+  @apply w-full h-full;
+}
+.modal-material-size{ 
+  @apply relative w-auto ;
+}
+@media (min-width: 576px){
+  .modal-material-size{
+    max-width:500px;
+    margin: 1.75rem auto;
+  }
+}
+.modal-material-size-md{
+  max-width:400px;
+}
+.modal-material-size-sm{
+  max-width:300px;
+}
+.modal-material-size-lg{
+  max-width:800px;
+}
+
+@media (min-width: 576px){
+    .modal-dialog {
+      max-width: 500px;
+      margin: 1.75rem auto;
+  }
+}
+
+.modal-dialog {
+    @apply relative w-auto pointer-events-none m-2;
+}
+
+.modal-content {
+  @apply relative flex flex-col w-full  bg-white bg-clip-padding;
+  border: 1px solid rgba(0,0,0,.2);
+  border-radius: .3rem;
+  outline: 0;
+}
+
+.modal-header {
+  @apply flex justify-between p-4 ;
+  align-items: flex-start;
+  border-bottom: 1px solid #dee2e6;
+  border-top-left-radius: calc(.3rem - 1px);
+  border-top-right-radius: calc(.3rem - 1px);
+}
+
+.modal-body {
+  @apply p-4 relative;
+  flex: 1 1 auto;
+}
+
+.form-control{
+  @apply block w-full bg-white py-1.5 px-3 font-normal text-base bg-clip-padding rounded;
+  height: calc(1.6em + .75rem + 2px);
+  color: #495057;
+  border: 1px solid #ced4da;
+  transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }

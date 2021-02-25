@@ -1,0 +1,10 @@
+.MainCard_Icon_container{
+    @apply absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2;
+}
+.MainCard_Icon{
+    @apply text-white w-10 h-10;
+}
+.MainCard:hover .MainCard_Icon{
+    @apply w-12 h-12 transition-all duration-300;
+    transform: scale(1.2);
+}
