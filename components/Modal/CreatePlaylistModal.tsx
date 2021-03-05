@@ -7,6 +7,8 @@ import Fade from '@material-ui/core/Fade';
 import { Input } from 'components/Form';
 import {useUI} from "context/UiContext"
 import {useCreate} from 'hooks/useDatabase'
+import {getRandomPhoto} from "lib/unsplash"
+import ModalCore from "./index"
 
 const CreatePlaylistModal = () => {
     const [name, setName] = useState('')
@@ -20,68 +22,48 @@ const CreatePlaylistModal = () => {
         setDescription('')
     }
 
-    const CreatePlaylist = (e) => {
+    const CreatePlaylist = async (e) => {
         e.preventDefault()
+        const imageSrc = (await getRandomPhoto()).urls.regular
         create('playlists', {
             name,
             description,
+            imageSrc,
             type: stateModal.type
         })
         setName('')
         setDescription('')
+        handleClose()
     }
 
     return (
-            <Modal
-            aria-labelledby="transition-modal-title"
-            aria-describedby="transition-modal-description"
-            className="modal-material"
-            open={stateModal.open}
-            onClose={handleClose}
-            closeAfterTransition
-            BackdropComponent={Backdrop}
-            BackdropProps={{
-                timeout: 500,
-            }}
-            >
-            <Fade in={stateModal.open}>
-                <div role="document" className="outline-none">
-                    <div className="modal-material-size modal-material-size-sm">
-                        <div className="modal-content">
-                            <div className="modal-header flex items-center justify-between border-0">
-                                <h4 className="modal-title">Create {stateModal.type} Playlist</h4>
-                                <button type="button" className="w-6 h-6 focus:outline-none"  onClick={handleClose}>
-                                    <CloseIcon className="text-black"/>
-                                </button>
-                            </div>
-                            <div className="modal-body">
-                                <div className="container">
-                                    <form onSubmit={CreatePlaylist}>
-                                        <div>
-                                        <Input
-                                            name="name" 
-                                            label="Name of playlist"
-                                            onChange={(e) => setName(e.target.value)}
-                                            defaultValue={name}
-                                            />
-                                        </div>
-                                        <div className="mb-2">
-                                            <Input
-                                            name="description" 
-                                            label="Description of playlist"
-                                            onChange={(e) => setDescription(e.target.value)}
-                                            defaultValue={description}
-                                            />
-                                        </div>
-                                        <Button type="submit" variant="contained" className="btn-block mt-2 bg-gray-200" onClick={CreatePlaylist}>Create</Button>
-                                    </form>
-                                </div>
-                            </div>
-                        </div>
+        <ModalCore
+        handleClose={handleClose}
+        title={`Create ${stateModal.type} Playlist`}
+        size="modal-material-size-sm"
+        >
+            <div className="container">
+                <form onSubmit={CreatePlaylist}>
+                    <div>
+                    <Input
+                        name="name" 
+                        label="Name of playlist"
+                        onChange={(e) => setName(e.target.value)}
+                        defaultValue={name}
+                        />
                     </div>
-                </div>
-            </Fade>
-        </Modal>
+                    <div className="mb-2">
+                        <Input
+                        name="description" 
+                        label="Description of playlist"
+                        onChange={(e) => setDescription(e.target.value)}
+                        defaultValue={description}
+                        />
+                    </div>
+                    <Button type="submit" variant="contained" className="btn-block mt-2 bg-gray-200" onClick={CreatePlaylist}>Create</Button>
+                </form>
+            </div>
+        </ModalCore>          
     )
 }
 

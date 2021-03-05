@@ -2,11 +2,12 @@ import {useState} from 'react'
 import { useMusic } from 'context/MusicContext'
 import ReactJkMusicPlayer from 'react-jinke-music-player'
 import 'react-jinke-music-player/assets/index.css'
-import Portal from '@reach/portal'
+import Portal from '@material-ui/core/Portal';
 
 type Playmode = 'order' | 'orderLoop' | 'singleLoop' | 'shufflePlay'
+
 const Player = () => {
-    const {musics, musicIndex} = useMusic()
+    const {musics, musicIndex, clearQueue, mount} = useMusic()
 
     const options = {
         audioLists: musics,
@@ -21,7 +22,7 @@ const Player = () => {
             right: 100,
             bottom: 120,
         },
-        remove: false,
+        remove: true,
         // if you want dynamic change current play mode you can change it
         // [type`order | orderLoop | singleLoop | shufflePlay`, default `order`]
         // playMode: 'order',
@@ -55,6 +56,9 @@ const Player = () => {
             fadeIn: 1000,
             fadeOut: 1000,
         },
+        async onDestroyed() {
+            // await clearQueue()
+        },
     }
 
     const [params, setParams] = useState({...options}) 
@@ -69,7 +73,7 @@ const Player = () => {
     
     return (
         <Portal>
-            {musicIndex && 
+            {mount && 
             <div className="footer">
                 <div className="wrapper">
                     <ReactJkMusicPlayer {...options} />

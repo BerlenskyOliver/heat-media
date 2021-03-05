@@ -23,7 +23,6 @@ function VideoCard({image, name, link, id, video = false}: Props) {
     const {create} = useCreate()
     const {playlistsVideo} = usePlaylist()
 
-    console.log(playlistsVideo)
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);
     };
@@ -40,11 +39,10 @@ function VideoCard({image, name, link, id, video = false}: Props) {
             imageSrc: image
         }
         if(playlistName){
-           data['playlist'] = playlistName  
+            data['playlist'] = playlistName  
         }
-        console.log(data)
-        // create('videos', data)
-        // handleClose()
+        create('videos', data)
+        handleClose()
     }
     
     return (
@@ -83,7 +81,7 @@ function VideoCard({image, name, link, id, video = false}: Props) {
                         >
                             <MenuItem ><CheckIcon/>&nbsp;&nbsp;Save</MenuItem>
                             {playlistsVideo?.map(playlist => (
-                                <MenuItem onClick={(e) => SaveVideo(e, playlist.name)} key={playlist.id}>Add to:{" "}{playlist.data.name}</MenuItem>
+                                <MenuItem onClick={(e) => SaveVideo(e, playlist.data.name)} key={playlist.id}>Add to:{" "}{playlist.data.name}</MenuItem>
                             ))}
                         </Menu>
                     </>

@@ -3,14 +3,14 @@ import { FC, useMemo, createContext, useReducer, useContext, useEffect } from 'r
 export interface State {
     music: any,
     musics: any,
-    playing: boolean,
+    mount: boolean,
     musicIndex?: number
 }
 
 const initialState = {
     music: {},
     musics: [],  
-    playing: false,
+    mount: false,
     musicIndex: null
 }
 
@@ -24,12 +24,12 @@ type Action =
         musics: any
         }
     | {
-        type: 'SET_PLAYING',
-        playing: boolean
-    }
-    | {
         type: 'SET_MUSIC_INDEX',
         musicIndex: number
+    }
+    | {
+        type: 'SET_MOUNT',
+        mount: boolean
     }
 
 export const MusicContext = createContext<State | any>(initialState)
@@ -53,6 +53,11 @@ function musicReducer(state: State, action: Action) {
                 ...state,
                 musicIndex: action.musicIndex
             }
+        case 'SET_MOUNT':
+            return{
+                ...state,
+                mount: action.mount
+            }
     }
 
 }
@@ -68,13 +73,14 @@ export const MusicProvider: FC = (props) => {
         dispatch({type: 'SET_MUSICS', musics})
         dispatch({type: 'SET_MUSIC', music})
         dispatch({type: 'SET_MUSIC_INDEX', musicIndex: index})
-        // dispatch({type: 'SET_PLAYING', playing: true})
+        dispatch({type: 'SET_MOUNT', mount: true})
     }
 
-    const clearQueue = () => {
-        dispatch({type: 'SET_MUSICS', musics: []})
+    const clearQueue = async () => {
+        dispatch({type: 'SET_MOUNT', mount: false})
         dispatch({type: 'SET_MUSIC', music: {}})
         dispatch({type: 'SET_MUSIC_INDEX', musicIndex: null})
+        dispatch({type: 'SET_MUSICS', musics: []})
     }
     const value = useMemo(
         () => ({

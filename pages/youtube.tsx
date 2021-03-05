@@ -1,8 +1,7 @@
 import {useState, useEffect} from 'react'
 import MainLayout from "layouts/MainLayout"
 import FetchApi from 'lib/FetchApi'
-import {SpinnerIcon, SearchIcon} from "components/Icons"
-// import debounce from "lodash.debounce"
+import {Spinner, SearchIcon} from "components/Icons"
 import MainCard from 'components/Card/MainCard'
 import generateYoutubeThumbnailUrl from "lib/generateYoutubeThumbnailUrl"
 //ytdl-core youtube-sr
@@ -26,7 +25,6 @@ const youtube = () => {
         }
     }
 
-    console.log(data)
     return (
         <div>
             <div className="mx-auto my-5">
@@ -37,6 +35,9 @@ const youtube = () => {
                         className="bg-gray-800 rounded-full w-full px-4 pl-8 py-1 focus:outline-none focus:shadow-outline" 
                         placeholder="Search"
                         autoComplete="off"
+                        autoFocus={true}
+                        autoCapitalize="off"
+                        autoCorrect="off"
                         name="q"
                         onChange={(e) => setInput(e.target.value)}
                         />
@@ -45,7 +46,7 @@ const youtube = () => {
                             <SearchIcon className="fill-current w-4 text-gray-500 mt-2 ml-2"/>
                         </div>
                         {loading && <div className="absolute top-0 right-0 mr-2 my-1">
-                            <SpinnerIcon className="text-gray-400 w-5"/>
+                            <Spinner className="text-gray-400 w-5"/>
                         </div>}
 
                     </form>

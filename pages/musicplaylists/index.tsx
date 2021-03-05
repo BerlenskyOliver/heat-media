@@ -4,6 +4,11 @@ import PlaylistMusicCard from 'components/Card/PlaylistMusicCard'
 import MainLayout from "layouts/MainLayout"
 import {useUI} from "context/UiContext"
 import IconButton  from '@material-ui/core/IconButton'
+import dynamic from 'next/dynamic'
+
+const CreatePlaylistModal = dynamic(() => import('components/Modal/CreatePlaylistModal'), {
+    loading: () => <></>,
+})
 
 const index = () => {
     const {playlistsMusic} = usePlaylist()
@@ -39,3 +44,5 @@ const index = () => {
 export default index
 
 index.Layout = MainLayout
+
+index.Modal = CreatePlaylistModal

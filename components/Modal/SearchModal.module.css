@@ -1,0 +1,90 @@
+.search_modal{
+    @apply fixed inset-0 flex items-center justify-center;
+    z-index: 100;
+    background-color: rgba(0,0,0,.7);
+    animation: SearchPopup .3s;
+}
+.search_modal_input{
+    @apply fixed left-auto right-auto bg-gray-900;
+    width: 600px;
+    top: 100px;
+    max-width: calc(100% - 20px);
+    border-radius: 4px;
+    padding: calc(1 * 8px);
+    margin-bottom: 40%;
+    animation: SearchPopupInput .3s;
+}
+@media screen and (max-height: 900px){
+    .search_modal_input{
+        top: 60px;
+    }
+}
+
+.search_modal_input input{
+    @apply w-full block outline-none border border-green-400 bg-gray-900;
+    padding-left: 45px;
+    border-radius: 3px;
+    /* padding: calc(1.5 * 8px) calc(1 * 8px); */
+    color: #FFF;
+    min-height: 44px;
+}
+
+.search_modal_input_button {
+    @apply inline-flex absolute top-1/2 transform -translate-y-1/2;
+    left: calc(3 * 8px);
+}
+
+.search_modal_spinner{
+    @apply absolute top-1/2 transform -translate-y-1/2 text-white;
+    right: calc(3 * 8px);
+}
+
+.search_modal_suggestions{
+    @apply absolute block left-0 right-0 bg-gray-900;
+    top: 100%;
+    padding: calc(1 * 8px) 0;
+    margin-top: -4px;
+    border-bottom-left-radius: 4px;
+    border-bottom-right-radius: 4px;
+}
+.search_modal_suggestions a{
+    /* font-family: Inter,sans-serif; */
+    display: flex;
+    padding: calc(1 * 8px) calc(2 * 8px);
+    transition: .3s!important;
+    line-height: 1.4;
+}
+.search_modal_suggestions a span:last-child {
+    @apply text-gray-200;
+}
+.search_modal_suggestions a:hover,
+.search_modal_suggestions a.focused {
+    @apply bg-green-400 bg-opacity-25;
+}
+.search_modal_suggestions li:last-child {
+    margin-top: calc(1 * 8px);
+}
+.search_modal_suggestions li:last-child a {
+    @apply justify-center;
+    font-size: 0.9rem;
+}
+
+.search_modal_suggestions_category {
+    @apply text-green-400 text-right border-r border-gray-400 ;
+    width: 101px;
+    flex: none;
+    padding-right: calc(1 * 8px);
+    margin-right: calc(1 * 8px);
+}
+@keyframes SearchPopup {
+    from {
+        opacity: 0;
+    }
+}
+
+@keyframes SearchPopupInput {
+    from {
+      transform: translateY(-20px);
+    }
+  }
+  

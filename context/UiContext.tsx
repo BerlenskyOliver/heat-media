@@ -3,12 +3,14 @@ import { FC, useMemo, createContext, useReducer, useContext } from 'react'
 
 export interface State {
     alert: ALERT | {}
-    CreatePlaylistModal: CREATEPLAYLIST
+    CreatePlaylistModal: CREATEPLAYLIST,
+    SearchOpen: boolean
 }
 
 const initialState = {
     alert: {},
-    CreatePlaylistModal: {open:false}
+    CreatePlaylistModal: {open:false},
+    SearchOpen: false
 }
 
 type Action =
@@ -19,7 +21,11 @@ type Action =
     | {
         type: 'DISPLAY_CREATE_PLAYLIST'
         CreatePlaylistModal: CREATEPLAYLIST
-    }
+        }
+    | {
+        type: "DISPLAY_SEARCH",
+        SearchOpen: boolean
+        }
 
 type ALERT = {message: string, open: boolean, type?: string}
 type CREATEPLAYLIST = {open: boolean, type?: string}
@@ -42,7 +48,12 @@ function uiReducer(state: State, action: Action) {
                 CreatePlaylistModal: action.CreatePlaylistModal,
             }
         }
-    
+        case "DISPLAY_SEARCH": {
+            return {
+                ...state,
+                SearchOpen: action.SearchOpen
+            }
+        }   
     }
 }
 
@@ -57,12 +68,20 @@ export const UIProvider: FC = (props) => {
 
     const displayCreatePlaylistModal = (CreatePlaylistModal: CREATEPLAYLIST) => dispatch({ type: 'DISPLAY_CREATE_PLAYLIST', CreatePlaylistModal})
    
+    const displaySearch = (open: boolean) => {
+        dispatch({
+            type: "DISPLAY_SEARCH",
+            SearchOpen: open
+        })
+    }
+    
     const value = useMemo(
         () => ({
         ...state,
         showAlert,
         closeAlert,
         displayCreatePlaylistModal,
+        displaySearch
         }),
         [state]
     )

@@ -1,23 +1,18 @@
 
 import dynamic from 'next/dynamic'
 import Navbar from "components/Navbar"
-// import CreatePlaylistModal from 'components/Modal/CreatePlaylistModal'
-import Portal from '@reach/portal'
 import { useMusic } from 'context/MusicContext'
-import Loading from "components/Loading"
+import { useUI } from 'context/UiContext'
+import SearchModal from "components/Modal/SearchModal"
 
-const dynamicProps = {
-    loading: () => <Loading />,
-}
-
-const CreatePlaylistModal = dynamic(() => import('components/Modal/CreatePlaylistModal'), dynamicProps)
 const Player = dynamic(() => import('components/Player'), {
     ssr: false,
 })
 
 const MainLayout = ({children}) => {
-    const {musicIndex} = useMusic()
-    
+    const {mount} = useMusic()
+    const {SearchOpen} = useUI()
+
     return (
         <div>
             <Navbar/>
@@ -25,11 +20,9 @@ const MainLayout = ({children}) => {
                 <div className="pt-6 pb-8">
                     {children}
                 </div>
-                {musicIndex && <Player/>}
+                {mount && <Player/>}
             </main>
-            <Portal>
-                <CreatePlaylistModal/>
-            </Portal>
+            {SearchOpen && <SearchModal/>}
         </div>
     )
 }
