@@ -1,9 +1,5 @@
 import {useState} from 'react'
 import Button from '@material-ui/core/Button';
-import {CloseIcon} from 'components/Icons'
-import Modal from '@material-ui/core/Modal';
-import Backdrop from '@material-ui/core/Backdrop';
-import Fade from '@material-ui/core/Fade';
 import { Input } from 'components/Form';
 import {useUI} from "context/UiContext"
 import {useCreate} from 'hooks/useDatabase'
@@ -14,8 +10,8 @@ const CreatePlaylistModal = () => {
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
     const {CreatePlaylistModal: stateModal, displayCreatePlaylistModal} = useUI()
-    const {create} = useCreate()
-
+    const {create, loading} = useCreate()
+    
     const handleClose = () => {
         displayCreatePlaylistModal({open: false})
         setName('')

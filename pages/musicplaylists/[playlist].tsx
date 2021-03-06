@@ -25,9 +25,9 @@ const Playlist = () => {
     const router = useRouter()
     const {playlist: p} = router.query
     
-    const {data: playlist, loading: loadingPlaylist}  = useWhereQuery('playlists', 'name', '==', p)
+    const {data: playlist}  = useWhereQuery('playlists', 'name', '==', p)
     
-    const {data: musics, loading}  = useWhereQuery('musics', 'playlist', '==', playlist?.[0]?.data?.name, 'name', 'asc', false)
+    const {data: musics}  = useWhereQuery('musics', 'playlist', '==', playlist?.[0]?.name, 'name', 'asc')
     
     const {PlayMusic, music: playingMusic} = useMusic()
     
@@ -35,13 +35,13 @@ const Playlist = () => {
         <div className="overflow-hidden text-white p-4" >
             <div className="flex items-center justify-center">
                 <img 
-                src={playlist?.[0]?.data?.imageSrc} 
-                alt={playlist?.[0]?.data?.name} 
+                src={playlist?.[0]?.imageSrc} 
+                alt={playlist?.[0]?.name} 
                 className="rounded-md w-72 h-72 object-cover"/>
                 <div className="flex-grow flex-shrink ml-8">
                         <p className="text-4xl font-semibold pb-2">PLAYLIST</p>
-                        <h2 className="text-2xl font-semibold pb-2 text-green-500">{playlist?.[0]?.data?.name}</h2>
-                        <p className="text-xl">{playlist?.[0]?.data?.description}</p>
+                        <h2 className="text-2xl font-semibold pb-2 text-green-500">{playlist?.[0]?.name}</h2>
+                        <p className="text-xl">{playlist?.[0]?.description}</p>
                 </div>
 
             </div>

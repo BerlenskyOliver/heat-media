@@ -13,7 +13,7 @@ const youtube = () => {
 
     const search = async (query: string) => {
         setLoading(true)
-        const res = await FetchApi(`api/search?q=${query}`)
+        const res = await FetchApi(`api/ytsearch?q=${query}`)
         setData(res)
         setLoading(false)
     }

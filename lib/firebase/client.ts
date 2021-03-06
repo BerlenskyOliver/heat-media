@@ -15,7 +15,6 @@ const clientCredentials = {
 let storage;
 let database;
 let FieldValue;
-let TimeStamp;
 
 if (typeof window !== 'undefined' && !firebase.apps.length) {  
     firebase.initializeApp(clientCredentials) 
@@ -27,12 +26,7 @@ if (typeof window !== 'undefined' && !firebase.apps.length) {
     storage = firebase.storage()
     database = firebase.firestore()
     FieldValue = firebase.firestore.FieldValue  
-
 }
-// const storage = firebase.storage()
-// const database = firebase.firestore()
-
-// const FieldValue = firebase.firestore.FieldValue
 
 
 export {storage, database, FieldValue}

@@ -13,9 +13,9 @@ const Video = () => {
     const router = useRouter()
     const {video: videoId} = router.query
     const [actualVideo, setActualVideo] = useState<any>({})
-    const {data: video, loading} = useWhereQuery('videos', 'id', '==', videoId)
-    const {data: videos, loading: loadingPlaylist}  = useWhereQuery('videos', 'playlist', '==', video[0]?.data?.playlist, 'name', 'asc')
-
+    const {data: video} = useWhereQuery('videos', 'id', '==', videoId)
+    const {data: videos}  = useWhereQuery('videos', 'playlist', '==', video[0]?.playlist, 'name', 'asc')
+    console.log(video)
     useEffect(() => setActualVideo(video[0]), [video])
 
     const url =`https://www.youtube.com/embed/${videoId}`;
@@ -25,7 +25,7 @@ const Video = () => {
     return (
         <>
         <div className="pb-8">
-            <h1 className="text-white text-3xl font-semibold">{actualVideo?.data?.name}</h1>
+            <h1 className="text-white text-3xl font-semibold">{actualVideo?.name}</h1>
         </div>
         <div className={`grid grid-cols-1 ${video.length> 0 ? "lg:grid-cols-3 md:grid-cols-3 gap-8": ''}`}>
             <div className="col-span-2 pb-3">
@@ -35,9 +35,9 @@ const Video = () => {
                     allowFullScreen>
                 </iframe>
                 {actualVideo && <div className="my-4 py-4 text-white border-b border-t border-gray-700">
-                    <p className="text-xl font-semibold">{actualVideo?.data?.name}</p>
-                    {actualVideo?.data?.playlist ? <span className="text-lg">In playlist :  {actualVideo?.data?.playlist}</span>: null}
-                    {actualVideo?.data?.timestamp ? <p>Publier le : {dayjs.unix(actualVideo?.data?.timestamp.seconds).fromNow()}</p> : null }
+                    <p className="text-xl font-semibold">{actualVideo?.name}</p>
+                    {actualVideo?.playlist ? <span className="text-lg">In playlist :  {actualVideo?.playlist}</span>: null}
+                    {actualVideo?.timestamp ? <p>Publier le : {dayjs.unix(actualVideo?.timestamp.seconds).fromNow()}</p> : null }
                 </div>}
             </div>
             <div className={`col-span-1 ${videos.length > 0 ? "": 'hidden'}`}>

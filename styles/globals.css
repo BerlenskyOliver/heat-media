@@ -94,3 +94,10 @@ a {
   border: 1px solid #ced4da;
   transition: border-color .15s ease-in-out,box-shadow .15s ease-in-out;
 }
+.search_modal_suggestions a span em {
+  @apply text-green-400;
+}
+.more_btn{
+  --tw-bg-opacity: 1;
+  background-color: rgba(16, 185, 129, var(--tw-bg-opacity)) !important;
+}

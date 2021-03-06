@@ -29,11 +29,11 @@ const index = () => {
                 {/* <h1>Uniquely YOurs</h1> */}
                 {playlistsMusic?.map(playlist => (
                     <PlaylistMusicCard 
-                    key={playlist.id} 
-                    name={playlist.data.name} 
-                    image={playlist.data.imageSrc} 
-                    description={playlist.data.description} 
-                    link={`/musicplaylists/${playlist.data.name}`} 
+                    key={playlist.docId} 
+                    name={playlist.name} 
+                    image={playlist.imageSrc} 
+                    description={playlist.description} 
+                    link={`/musicplaylists/${playlist.name}`} 
                     />
                 ))}
             </div>

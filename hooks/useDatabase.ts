@@ -5,43 +5,29 @@ export const useSimpleQuery = (
     collection: string, 
     orderBy: string = 'timestamp',
     direction: any = 'desc',
-    withId: boolean = true
+    limit: number = 100
 ) => {
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
-    
+
     const load = useCallback(() => {
-        setLoading(true)
-        if(withId){
-            database
-            .collection(collection)
-            .orderBy(orderBy, direction)
-            .limit(100)
-            .onSnapshot(snapshot => {
-                setData(snapshot.docs.map(doc => ({id: doc.id, data: doc.data()})))
-            })
-        }else{
-            database
-            .collection(collection)
-            .orderBy(orderBy, direction)
-            .limit(100)
-            .onSnapshot(snapshot => {
-                setData(snapshot.docs.map(doc => doc.data()))
-            })
-        }
-        
-        setLoading(false)
+        const unsubscribe = database
+        .collection(collection)
+        .orderBy(orderBy, direction)
+        .limit(limit)
+        .onSnapshot(snapshot => {
+            setData(snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()})))
+        })
+        return unsubscribe
     },[])
 
     useEffect(() => {
-        load()
-        return () => load()
+        const unsubscribe = load()
+        return () => unsubscribe()
     }, [])
 
     return {
         load,
-        data,
-        loading
+        data
     }
 }
 
@@ -51,122 +37,72 @@ export const useWhereQuery = (
     operator: any = "==", 
     value: string | string[], 
     orderBy?: string,
-    direction?: any,
-    withId: boolean = true
+    direction?: any
     ) => {
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
 
     const load = useCallback(() => {
-        setLoading(true)
+        let unsubscribe;
         if(orderBy && direction){
-            if(withId){
-                database
-                .collection(collection)
-                .where(feild, operator, value)
-                .orderBy(orderBy, direction)
-                .onSnapshot(snapshot => {
-                    setData(snapshot.docs.map(doc => ({id: doc.id, data: doc.data()})))
-                })
-            }else{
-                database
-                .collection(collection)
-                .where(feild, operator, value)
-                .orderBy(orderBy, direction)
-                .onSnapshot(snapshot => {
-                    setData(snapshot.docs.map(doc => doc.data()))
-                })
-            }
-            
+            unsubscribe =database
+            .collection(collection)
+            .where(feild, operator, value)
+            .orderBy(orderBy, direction)
+            .onSnapshot(snapshot => {
+                setData(snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()})))
+            })
         }else{
-            if(withId){
-                database
-                .collection(collection)
-                .where(feild, operator, value)
-                .onSnapshot(snapshot => {
-                    setData(snapshot.docs.map(doc => ({id: doc.id, data: doc.data()})))
-                })
-            }else{
-                database
-                .collection(collection)
-                .where(feild, operator, value)
-                .onSnapshot(snapshot => {
-                    setData(snapshot.docs.map(doc =>  doc.data()))
-                })
-            }
-            
+            unsubscribe = database
+            .collection(collection)
+            .where(feild, operator, value)
+            .onSnapshot(snapshot => {
+                setData(snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()})))
+            })
         }
-        setLoading(false)
-
+        return unsubscribe
     }, [value])
 
     useEffect(() => {
         if(value) {
-            load()
-            return () => load()
+            const unsubscribe = load()
+            return () => unsubscribe()
         }
     }, [value])
     
     return {
         load,
-        data,
-        loading
+        data
     }
 }
 
-export const useQueryWithChild = () => {
+export const useQueryWithChild = (
+    collection: string, 
+    docId: string, 
+    childCollection: string, 
+    orderBy: string = 'timestamp',
+    direction: any = 'desc',
+) => {
     const [data, setData] = useState([])
-    const [loading, setLoading] = useState(false)
 
-    const load = useCallback( async (
-        collection, 
-        docId, 
-        childCollection, 
-        orderBy
-    ) => {
-        setLoading(true)
-
-        database
+    const load = useCallback(() => {
+        
+        const unsubscribe = database
             .collection(collection)
             .doc(docId)
             .collection(childCollection)
-            .orderBy('timestamp', orderBy)
+            .orderBy(orderBy, direction)
             .onSnapshot(snapshot => {
-                setData(snapshot.docs.map(doc => ({id: doc.id, reel: doc.data()})))
+                setData(snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()})))
             })
-        setLoading(false)
-
+        return unsubscribe
     },[])
 
-    return { load, data, loading }
-}
-
-export const useCreate = () => {
-    const create = useCallback(async (
-        collection: string, 
-        field: any
-    ) => {
-        database
-            .collection(collection)
-            .add({
-                ...field,
-                timestamp: FieldValue.serverTimestamp()
-            })
+    useEffect(() => {
+        const unsubscribe = load()
+        return () =>  unsubscribe()
     }, [])
-    return {create}
-}
 
-
-export const useUpdate = () => {
-    const update = useCallback((
-        collection: string,
-        field: any
-    ) => {
-        database
-            .collection(collection)
-            
-    }, [])
-    return {update}
+    return { load, data }
 }
 
 export const usePaginatedQuery = (
@@ -174,27 +110,106 @@ export const usePaginatedQuery = (
     orderBy: string = 'timestamp',
     direction: any = 'desc',
     limit: number = 100, 
-    withId: boolean = true
+    lastVisible?: any
 ) => {
     const [data, setData] = useState([])
     const [next, setNext] = useState(null)
     const [prev, setPrev] = useState(null)
-    const [loading, setLoading] = useState(false)
 
-    const load = useCallback(() => {
-        database
+    const load = useCallback((
+        collection: string, 
+        orderBy: string = 'timestamp',
+        direction: any = 'desc',
+        limit: number = 100, 
+        lastVisible?: any
+    ) => {
+        let unsubscribe;
+        if(lastVisible){
+            unsubscribe = database
+            .collection(collection)
+            .orderBy(orderBy, direction)
+            .startAfter(lastVisible)
+            .limit(limit)
+            .onSnapshot(snapshot => {
+                setData(snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()})))
+                setNext(snapshot.docs[snapshot.docs.length - 1])
+            })   
+        }else{
+            
+            unsubscribe = database
             .collection(collection)
             .orderBy(orderBy, direction)
             .limit(limit)
             .onSnapshot(snapshot => {
-                setData(snapshot.docs.map(doc => ({id: doc.id, data: doc.data()})))
+                setData(snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()})))
+                setNext(snapshot.docs[snapshot.docs.length - 1])
             })
+        }
+        return unsubscribe
+
     }, [])
 
     useEffect(() => {
-        load()
-        return () => load()
+        const unsubscribe = load(collection, orderBy, direction, limit, lastVisible)
+        return () => unsubscribe()
     }, [])
+    
 
-    return { data, next, prev, loading }
+    return { data, next, prev, load }
 }
+
+
+export const useCreate = () => {
+    const [loading, setLoading] = useState(false)
+    const create = useCallback(async (
+        collection: string, 
+        field: any
+    ) => {
+        setLoading(true)
+        await database
+            .collection(collection)
+            .add({
+                ...field,
+                timestamp: FieldValue.serverTimestamp()
+            })
+        setLoading(false)
+    }, [])
+    return {create, loading}
+}
+
+
+export const useUpdate = () => {
+    const [loading, setLoading] = useState(false)
+
+    const update = useCallback(async (
+        collection: string,
+        docId: string,
+        field: any,
+    ) => {
+        setLoading(true)
+        await database
+            .collection(collection)
+            .doc(docId)
+            .update({...field})
+        setLoading(false)
+    }, [])
+    return {update, loading}
+}
+
+const useDelete = () => {
+    const [loading, setLoading] = useState(false)
+
+    const Del = useCallback(async (
+        collection: string,
+        docId: string,
+    ) => {
+        setLoading(true)
+        await database
+            .collection(collection)
+            .doc(docId)
+            .delete()
+        setLoading(false)
+    }, [])
+    return {Del, loading}
+}
+

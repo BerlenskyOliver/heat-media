@@ -33,28 +33,28 @@ const SearchModal = () => {
                             <Spinner className="text-white"/>
                         </div>
                         }
-                        <ul className={s.search_modal_suggestions}>
+                        <ul className={`${s.search_modal_suggestions} search_modal_suggestions`}>
                             <li>
                                 <a href="#">
-                                    <span className={s.search_modal_suggestions_category }>Video</span>
+                                    <span className={s.search_modal_suggestions_category }>videos</span>
+                                    <span><em>Daba</em>by Videos</span>
+                                </a>
+                            </li>
+                            <li>
+                                <a href="#">
+                                    <span className={s.search_modal_suggestions_category }>musics</span>
                                     <span>Dababy</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
-                                    <span className={s.search_modal_suggestions_category }>Music</span>
+                                    <span className={s.search_modal_suggestions_category }>playlists</span>
                                     <span>Dababy</span>
                                 </a>
                             </li>
                             <li>
                                 <a href="#">
-                                    <span className={s.search_modal_suggestions_category }>Playlist</span>
-                                    <span>Dababy</span>
-                                </a>
-                            </li>
-                            <li>
-                                <a href="#">
-                                    <span className={s.search_modal_suggestions_category }>Video</span>
+                                    <span className={s.search_modal_suggestions_category }>videos</span>
                                     <span>Dababy</span>
                                 </a>
                             </li>

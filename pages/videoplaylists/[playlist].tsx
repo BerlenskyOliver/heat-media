@@ -19,11 +19,12 @@ import MainCard from 'components/Card/MainCard'
 //         fallback: true,
 //     }
 // }
+
 const Playlist = () => {
     const router = useRouter()
     const {playlist} = router.query
-    const {data: videos, loading}  = useWhereQuery('videos', 'playlist', '==', playlist, 'name', 'asc')
-    
+    const {data: videos}  = useWhereQuery('videos', 'playlist', '==', playlist, 'name', 'asc')
+
     return ( 
         <>
             <div className="pb-8 flex justify-between">
@@ -36,9 +37,9 @@ const Playlist = () => {
                 {videos?.map((video, index) => (
                     <MainCard 
                     key={index} 
-                    name={video.data.name} 
-                    image={video.data.imageSrc} 
-                    link={`/videos/${video.data.id}`} 
+                    name={video.name} 
+                    image={video.imageSrc} 
+                    link={`/videos/${video.id}`} 
                     video={true}
                     />
                 ))}

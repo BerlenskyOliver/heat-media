@@ -50,7 +50,7 @@ export const PlaylistProvider: FC = (props) => {
             .onSnapshot(snapshot => {
                 dispatch({
                     type: 'SET_PLAYLIST_VIDEOS', 
-                    playlistsVideo: snapshot.docs.map(doc => ({id: doc.id, data: doc.data()}))
+                    playlistsVideo: snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()}))
                 }) 
             })
     }, [])
@@ -60,11 +60,10 @@ export const PlaylistProvider: FC = (props) => {
             .onSnapshot(snapshot => {
                 dispatch({
                     type: 'SET_PLAYLIST_MUSICS', 
-                    playlistsMusic: snapshot.docs.map(doc => ({id: doc.id, data: doc.data()}))
+                    playlistsMusic: snapshot.docs.map(doc => ({docId: doc.id, ...doc.data()}))
                 }) 
             })
-    }, [])
-    
+    }, []) 
 
     const value = useMemo(
         () => ({
@@ -75,7 +74,6 @@ export const PlaylistProvider: FC = (props) => {
     )
 
     return <PlaylistContext.Provider value={value} {...props} />
-    
 }
 
 export const usePlaylist = () => {

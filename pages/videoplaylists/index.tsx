@@ -27,10 +27,11 @@ const index = () => {
             </div>
             <div className="grid grid-cols-2 lg:grid-cols-3 md:grid-cols-2 xsm:grid-cols-2 sm:grid-cols-2 gap-6">
                 {playlistsVideo?.map(playlist => (
-                    <MainCard key={playlist.id} 
-                    name={playlist.data.name}
-                    image={playlist.data.imageSrc} 
-                    link={`/videoplaylists/${playlist.data.name}`} />
+                    <MainCard 
+                    key={playlist.docId} 
+                    name={playlist.name}
+                    image={playlist.imageSrc} 
+                    link={`/videoplaylists/${playlist.name}`} />
                 ))}
             </div> 
         

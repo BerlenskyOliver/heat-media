@@ -81,7 +81,7 @@ function VideoCard({image, name, link, id, video = false}: Props) {
                         >
                             <MenuItem ><CheckIcon/>&nbsp;&nbsp;Save</MenuItem>
                             {playlistsVideo?.map(playlist => (
-                                <MenuItem onClick={(e) => SaveVideo(e, playlist.data.name)} key={playlist.id}>Add to:{" "}{playlist.data.name}</MenuItem>
+                                <MenuItem onClick={(e) => SaveVideo(e, playlist.name)} key={playlist.docId}>Add to:{" "}{playlist.name}</MenuItem>
                             ))}
                         </Menu>
                     </>

@@ -1,10 +1,17 @@
-import { useSimpleQuery } from "hooks/useDatabase"
+import { useState, useEffect, useCallback } from 'react'
+import { usePaginatedQuery } from "hooks/useDatabase"
 import MainLayout from "layouts/MainLayout"
 import MainCard from 'components/Card/MainCard'
+import Button from "@material-ui/core/Button"
 
 const Videos = () => {
-    const {data: videos, loading} = useSimpleQuery('videos')
-    
+    const {data, next, load} = usePaginatedQuery('videos', 'name', 'asc', 100)
+    const [videos, setVideos] = useState([])
+
+    useEffect(() => setVideos(videos => [...videos, ...data]), [data])
+
+    const loadMore = useCallback(() => load('videos', 'name', 'asc', 100, next), [next])
+
     return (
         <div>
             <div className="pb-8 flex justify-between">
@@ -14,13 +21,16 @@ const Videos = () => {
                 {videos?.map((video, index) => (
                     <MainCard 
                     key={index} 
-                    name={video.data.name} 
-                    image={video.data.imageSrc} 
-                    link={`/videos/${video.data.id}`} 
+                    name={video.name} 
+                    image={video.imageSrc} 
+                    link={`/videos/${video.id}`} 
                     video={true}
                     />
                 ))}
             </div>
+            {next && <div className="text-center">
+                <Button variant="contained" className="more_btn" onClick={loadMore}>Load more</Button>
+            </div>}
         </div>
     )
 }
