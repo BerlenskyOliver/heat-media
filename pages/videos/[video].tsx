@@ -15,7 +15,7 @@ const Video = () => {
     const [actualVideo, setActualVideo] = useState<any>({})
     const {data: video} = useWhereQuery('videos', 'id', '==', videoId)
     const {data: videos}  = useWhereQuery('videos', 'playlist', '==', video[0]?.playlist, 'name', 'asc')
-    console.log(video)
+
     useEffect(() => setActualVideo(video[0]), [video])
 
     const url =`https://www.youtube.com/embed/${videoId}`;

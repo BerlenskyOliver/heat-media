@@ -1,10 +1,12 @@
 import {useRouter} from 'next/router'
 import MainLayout from "layouts/MainLayout"
 import {useWhereQuery} from 'hooks/useDatabase'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import {PlayMusic} from 'redux/actions/MusicActions'
 import IconButton  from '@material-ui/core/IconButton'
 import { PlayIcon, MoreHorizIcon } from 'components/Icons'
 import SongRow from 'components/SongRow'
-import { useMusic } from "context/MusicContext"
 
 // export const getStaticProps = async () => {
 //     return {
@@ -22,15 +24,17 @@ import { useMusic } from "context/MusicContext"
 // }
 
 const Playlist = () => {
+    const dispatch = useDispatch()
     const router = useRouter()
+
     const {playlist: p} = router.query
     
     const {data: playlist}  = useWhereQuery('playlists', 'name', '==', p)
     
     const {data: musics}  = useWhereQuery('musics', 'playlist', '==', playlist?.[0]?.name, 'name', 'asc')
     
-    const {PlayMusic, music: playingMusic} = useMusic()
-    
+    const playingMusic = useSelector((state) => state.musics.music)
+
     return (
         <div className="overflow-hidden text-white p-4" >
             <div className="flex items-center justify-center">
@@ -59,7 +63,7 @@ const Playlist = () => {
                         name={music.name}
                         cover={music.cover}
                         playing={playingMusic.name === music.name}
-                        onClick={() => PlayMusic(musics, music, index)} />
+                        onClick={() => dispatch(PlayMusic(musics, music, index))} />
                     ))}
                 </div>
             </div>

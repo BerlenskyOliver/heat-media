@@ -1,16 +1,19 @@
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import {closeAlert} from 'redux/actions/UiActions'
 import Snackbar from '@material-ui/core/Snackbar';
 import IconButton from '@material-ui/core/IconButton';
 import { CloseIcon } from 'components/Icons'
-import { useUI } from 'context/UiContext';
 
 const AlertMessage = () => {
-    const {alert, closeAlert} = useUI()
+    const dispatch = useDispatch()
+    const alert = useSelector((state) => state.ui.alert)
 
     const handleClose = (e: React.SyntheticEvent | React.MouseEvent, reason?: string) => {
         if (reason === 'clickaway') {
             return;
         }
-        closeAlert()
+        dispatch(closeAlert())
     }
 
     return (

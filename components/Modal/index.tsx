@@ -2,32 +2,31 @@ import {CloseIcon} from 'components/Icons'
 import Modal from '@material-ui/core/Modal';
 import Backdrop from '@material-ui/core/Backdrop';
 import Fade from '@material-ui/core/Fade';
-import {useUI} from "context/UiContext"
 
 interface Props{
     size: string,
     title: string,
     handleClose: () => void,
+    open: boolean
     children: any
 }
 
-const ModalCore = ({size, title, handleClose, children} : Props) => {
-    const {CreatePlaylistModal: stateModal} = useUI()
+const ModalCore = ({size, title, handleClose, open, children} : Props) => {
 
     return (
         <Modal
             aria-labelledby="transition-modal-title"
             aria-describedby="transition-modal-description"
             className="modal-material"
-            open={stateModal.open}
+            open={open}
             onClose={handleClose}
             closeAfterTransition
             BackdropComponent={Backdrop}
             BackdropProps={{
-                timeout: 500,
+                timeout: 300,
             }}
             >
-            <Fade in={stateModal.open}>
+            <Fade in={open}>
                 <div role="document" className="outline-none">
                     <div className={`modal-material-size ${size}`}>
                         <div className="modal-content">

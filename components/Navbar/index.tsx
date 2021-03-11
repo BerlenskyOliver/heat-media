@@ -1,15 +1,16 @@
+import {useState} from 'react'
+import Link from 'next/link'
+import {useRouter} from 'next/router'
+import { useDispatch } from 'react-redux'
+import {displaySearch} from "redux/actions/UiActions"
 import { MenuIcon, CloseIcon, 
 MusicIcon, YoutubeIcon, LibraryVideoIcon, 
 LibraryMusicIcon, VideoFilesIcon, SearchIcon} 
 from 'components/Icons'
-import {useState} from 'react'
-import Link from 'next/link'
-import {useRouter} from 'next/router'
-import { useUI } from 'context/UiContext'
 
 const index = () => {
+    const dispatch = useDispatch()
     const router = useRouter()
-    const {displaySearch} = useUI()
     const [navOpen, setNavOpen] = useState(false)
     const [dropdown, setDropdown] = useState(true)
 
@@ -30,9 +31,7 @@ const index = () => {
                     </div>
                     <div className="flex-1 flex items-center justify-center sm:items-stretch sm:justify-start">
                         <div className="flex-shrink-0 flex items-center">
-                            <h4 className="font-semibold text-xl text-green-400"><span className="text-white">Heat</span>Media</h4>
-                            {/* <img className="block lg:hidden h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-mark-indigo-500.svg" alt="Workflow"/>
-                            <img className="hidden lg:block h-8 w-auto" src="https://tailwindui.com/img/logos/workflow-logo-indigo-500-mark-white-text.svg" alt="Workflow"/> */}
+                            <h4 className="font-semibold text-xl text-green-400"><span className="text-white">Heat</span>Media</h4>                           
                         </div>
                         <div className="hidden sm:block sm:ml-6">
                             <div className="flex space-x-4">
@@ -62,7 +61,7 @@ const index = () => {
                     </div>
                     <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                         <button
-                        onClick={() => displaySearch(true)}
+                        onClick={() => dispatch(displaySearch(true))}
                         className="bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white">
                             <span className="sr-only">Open Search</span>
                             <SearchIcon className="h-6 w-6"/>                           

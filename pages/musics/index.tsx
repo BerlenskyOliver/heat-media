@@ -1,16 +1,18 @@
 import { useState, useEffect, useCallback } from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import {PlayMusic} from 'redux/actions/MusicActions'
 import SongRow from "components/SongRow"
-import { useMusic } from "context/MusicContext"
 import { usePaginatedQuery } from "hooks/useDatabase"
 import MainLayout from "layouts/MainLayout"
-import {usePlaylist} from "context/PlaylistContext"
 import Button from "@material-ui/core/Button"
 
 const index = () => {
-    const {data, next, load} =  usePaginatedQuery('musics', 'name', 'asc', 100)
-    const {PlayMusic, music: playingMusic} = useMusic()
-    const {playlistsMusic} = usePlaylist()
+    const dispatch = useDispatch()
     const [musics, setMusics] = useState([])
+    const {data, next, load} =  usePaginatedQuery('musics', 'name', 'asc', 100)
+    const playingMusic = useSelector((state) => state.musics.music)
+    const playlistsMusic = useSelector((state) => state.playlists.playlistsMusic)
 
     useEffect(() => setMusics(mscs => [...mscs, ...data]), [data])
 
@@ -29,7 +31,7 @@ const index = () => {
                     cover={music.cover}
                     playlists={playlistsMusic}
                     playing={playingMusic.name === music.name}
-                    onClick={() => PlayMusic(musics, music,index)}/>
+                    onClick={() => dispatch(PlayMusic(musics, music,index))}/>
                 ))}
             
             </div>

@@ -1,4 +1,4 @@
-import {useState, useEffect} from 'react'
+import {useState} from 'react'
 import MainLayout from "layouts/MainLayout"
 import FetchApi from 'lib/FetchApi'
 import {Spinner, SearchIcon} from "components/Icons"

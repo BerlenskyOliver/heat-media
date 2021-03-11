@@ -1,7 +1,7 @@
 import {useState} from 'react'
 import Link from 'next/link'
 import { PlayIcon, PlaylistAddIcon, CheckIcon } from 'components/Icons';
-import {usePlaylist} from "context/PlaylistContext"
+import { useSelector } from 'react-redux'
 import s from "./MainCard.module.css"
 import IconButton from '@material-ui/core/IconButton';
 import Image from 'next/image'
@@ -21,7 +21,7 @@ function VideoCard({image, name, link, id, video = false}: Props) {
 
     const [anchorEl, setAnchorEl] = useState(null);
     const {create} = useCreate()
-    const {playlistsVideo} = usePlaylist()
+    const playlistsVideo = useSelector((state) => state.playlists.playlistsVideo)
 
     const handleClick = (event) => {
         setAnchorEl(event.currentTarget);

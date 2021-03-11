@@ -1,5 +1,7 @@
 import {useState} from 'react'
-import { useMusic } from 'context/MusicContext'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import { clearQueue } from 'redux/actions/MusicActions'
 import ReactJkMusicPlayer from 'react-jinke-music-player'
 import 'react-jinke-music-player/assets/index.css'
 import Portal from '@material-ui/core/Portal';
@@ -7,7 +9,10 @@ import Portal from '@material-ui/core/Portal';
 type Playmode = 'order' | 'orderLoop' | 'singleLoop' | 'shufflePlay'
 
 const Player = () => {
-    const {musics, musicIndex, clearQueue, mount} = useMusic()
+    const dispatch = useDispatch()
+    const musics = useSelector((state) => state.musics.musics)
+    const musicIndex = useSelector((state) => state.musics.musicIndex)
+    const mount = useSelector((state) => state.musics.mount)
 
     const options = {
         audioLists: musics,
@@ -57,7 +62,7 @@ const Player = () => {
             fadeOut: 1000,
         },
         async onDestroyed() {
-            // await clearQueue()
+            // await dispatch(clearQueue())
         },
     }
 

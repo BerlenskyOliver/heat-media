@@ -1,19 +1,22 @@
 import {useState} from 'react'
+import { useSelector } from 'react-redux'
+import { useDispatch } from 'react-redux'
+import {displayCreatePlaylistModal} from 'redux/actions/UiActions'
 import Button from '@material-ui/core/Button';
 import { Input } from 'components/Form';
-import {useUI} from "context/UiContext"
 import {useCreate} from 'hooks/useDatabase'
 import {getRandomPhoto} from "lib/unsplash"
 import ModalCore from "./index"
 
 const CreatePlaylistModal = () => {
+    const dispatch = useDispatch()
+    const stateModal = useSelector((state) => state.ui.CreatePlaylistModal)
+    const {create, loading} = useCreate()
     const [name, setName] = useState('')
     const [description, setDescription] = useState('')
-    const {CreatePlaylistModal: stateModal, displayCreatePlaylistModal} = useUI()
-    const {create, loading} = useCreate()
     
     const handleClose = () => {
-        displayCreatePlaylistModal({open: false})
+        dispatch(displayCreatePlaylistModal({open: false}))
         setName('')
         setDescription('')
     }
@@ -37,6 +40,7 @@ const CreatePlaylistModal = () => {
         handleClose={handleClose}
         title={`Create ${stateModal.type} Playlist`}
         size="modal-material-size-sm"
+        open={stateModal.open}
         >
             <div className="container">
                 <form onSubmit={CreatePlaylist}>

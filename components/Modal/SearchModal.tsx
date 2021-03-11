@@ -1,19 +1,20 @@
 import {useState} from 'react'
+import { useDispatch } from 'react-redux'
+import {displaySearch} from "redux/actions/UiActions"
 import s from './SearchModal.module.css'
 import {SearchIcon, Spinner} from "components/Icons"
 import ClickAwayListener from '@material-ui/core/ClickAwayListener'
 import Portal from '@material-ui/core/Portal';
-import { useUI } from 'context/UiContext'
 
 const SearchModal = () => {
+    const dispatch = useDispatch()
     const [loading, setLoading] = useState(false)
     const [q, setQ] = useState<string>('')
-    const {displaySearch} = useUI()
 
     return (
         <Portal>
             <div className={s.search_modal}>
-                <ClickAwayListener onClickAway={() => displaySearch(false)}>
+                <ClickAwayListener onClickAway={() => dispatch(displaySearch(false))}>
                     <form className={s.search_modal_input}>
                         <input 
                         type="text" 
